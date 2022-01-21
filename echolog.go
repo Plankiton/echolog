@@ -2,6 +2,7 @@ package echolog
 
 import (
 	"github.com/labstack/echo/v4"
+	"fmt"
 )
 
 func makeLog(c echo.Context, msg ...interface{}) log.JSON {
@@ -15,7 +16,7 @@ func makeLog(c echo.Context, msg ...interface{}) log.JSON {
 
 	output := log.JSON{
 		"id": id,
-		"message": msg,
+		"message": fmt.Sprint(msg),
 	}
 
 	return output
