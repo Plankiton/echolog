@@ -2,7 +2,6 @@ package echolog
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/gommon/log"
 )
 
 func makeLog(c echo.Context, msg ...interface{}) log.JSON {
@@ -14,8 +13,10 @@ func makeLog(c echo.Context, msg ...interface{}) log.JSON {
 		id = res.Header().Get(echo.HeaderXRequestID)
 	}
 
-	output := log.JSON{"id": id}
-	output["message"] = msg
+	output := log.JSON{
+		"id": id,
+		"message": msg,
+	}
 
 	return output
 }
@@ -23,20 +24,17 @@ func makeLog(c echo.Context, msg ...interface{}) log.JSON {
 // Log logs json encoded information
 func Log(c echo.Context, msg ...interface{}) {
 	output := makeLog(c, msg...)
-	output["level"] = "info"
-	c.Logger().Printj(output)
+	c.Logger().Infoj(output)
 }
 
 // Err logs json encoded error
 func Err(c echo.Context, msg ...interface{}) {
 	output := makeLog(c, msg...)
-	output["level"] = "error"
-	c.Logger().Printj(output)
+	c.Logger().Errorj(output)
 }
 
 // War logs json encoded wanring
 func War(c echo.Context, msg ...interface{}) {
 	output := makeLog(c, msg...)
-	output["level"] = "error"
-	c.Logger().Printj(output)
+	c.Logger().Debugj(output)
 }
